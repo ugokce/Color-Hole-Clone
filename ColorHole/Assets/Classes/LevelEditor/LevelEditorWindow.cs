@@ -46,7 +46,7 @@ public class LevelEditorWindow : EditorWindow
             {
                 isSerializationInProgress = false;
 
-                errorMessages += "Number of Created Objects Must Be Greater Than Zero \n";
+                errorMessages += "Number of Created Objects Must Be Greater Than Zero";
             }
 
             LevelSerializer.SerializeLevel(newLevel);
