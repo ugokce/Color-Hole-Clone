@@ -18,6 +18,7 @@ public class PlayerEvents
     public EventWithVector3 onDestinationTargetSelected;
     public UnityEvent onGateOpened;
     public UnityEvent onSubLevelCleared;
+    public EventWithVector3 onCameraShouldFollowPlayer;
 
     //completed level id
     public EventWithInt onLevelCompleted;
@@ -29,5 +30,6 @@ public class PlayerEvents
         onGateOpened = new UnityEvent();
         onSubLevelCleared = new UnityEvent();
         onLevelCompleted = new EventWithInt();
+        onCameraShouldFollowPlayer = new EventWithVector3();
     }
 }

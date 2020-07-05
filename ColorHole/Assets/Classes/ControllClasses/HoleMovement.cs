@@ -24,7 +24,7 @@ public class HoleMovement : MonoBehaviour
         {
             return;
         }
-
+     
         holeRigidbody.velocity = direction * moveSpeed;
     }
 

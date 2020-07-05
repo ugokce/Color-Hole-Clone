@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: aa9244a695c092b4a8a6bb3b9bef04a6
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - collectableMaterial: {fileID: 2100000, guid: 7020581cb79760a41846fe6a97757c42,
+      type: 2}
+  - groundMaterial: {fileID: 2100000, guid: 269b7cc847b9db84a921aab99d7f0b44, type: 2}
+  - obstacleMaterial: {fileID: 2100000, guid: 67bad63459633ad4094996d1dfa931d2, type: 2}
+  - trapGateMaterial: {fileID: 2100000, guid: b20d901978e821c49afde01bd88c4ff6, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

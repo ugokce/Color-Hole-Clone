@@ -12,7 +12,7 @@ public class InputController : MonoBehaviour
         {
             if(Input.GetTouch(0).phase == TouchPhase.Moved)
             {
-                fingerMovementDir = Vector2.ClampMagnitude(Input.GetTouch(0).deltaPosition, 1);
+                fingerMovementDir = Vector2.ClampMagnitude(Input.GetTouch(0).deltaPosition, 1.5f);
             }
 
             if (Input.GetTouch(0).phase == TouchPhase.Stationary || Input.GetTouch(0).phase == TouchPhase.Stationary)
@@ -20,7 +20,7 @@ public class InputController : MonoBehaviour
                 fingerMovementDir = Vector2.zero;
             }
 
-            EventManager.getInstance().playerEvents.onPlayerInput.Invoke(new Vector3(fingerMovementDir.x, 0, fingerMovementDir.y));
+            EventManager.getInstance().playerEvents.onPlayerInput.Invoke(new Vector3(-fingerMovementDir.y, 0, fingerMovementDir.x));
         }
     }
 }
