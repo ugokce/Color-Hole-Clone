@@ -45,4 +45,11 @@ public class Level : MonoBehaviour
     {
         return levelObjects.Count;
     }
+
+    public void initLevel()
+    {
+
+    }
+
+  
 }

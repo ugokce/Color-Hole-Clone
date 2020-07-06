@@ -12,7 +12,7 @@ public class InputController : MonoBehaviour
         {
             if(Input.GetTouch(0).phase == TouchPhase.Moved)
             {
-                fingerMovementDir = Vector2.ClampMagnitude(Input.GetTouch(0).deltaPosition, 1.5f);
+                fingerMovementDir = Vector2.ClampMagnitude(Input.GetTouch(0).deltaPosition, 1);
             }
 
             if (Input.GetTouch(0).phase == TouchPhase.Stationary || Input.GetTouch(0).phase == TouchPhase.Stationary)

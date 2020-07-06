@@ -52,7 +52,7 @@ public class LevelSerializer : SerializationBinder
             bformatter.Binder = new LevelSerializer();
             newLevel = (Level)bformatter.Deserialize(stream);
             stream.Close();
-
+            
             return newLevel;
         }
         catch (IOException err)

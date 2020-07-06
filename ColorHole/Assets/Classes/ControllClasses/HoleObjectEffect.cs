@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class HoleObjectEffect : MonoBehaviour
 {
     Rigidbody holeRigidbody;
     public float pullRadius = 3;
-
+    public float pullForceConstant = 1f;
 
     void Start()
     {
@@ -26,27 +27,31 @@ public class HoleObjectEffect : MonoBehaviour
 
         foreach(Collider objectToPull in objectsInPullRange)
         {
-            ApplyPullForceToObject(objectToPull.gameObject);
+            if(objectToPull.tag == "LevelObject" && objectToPull.gameObject.layer != (int)GamePhysicsLayers.Hole)
+            {
+                ApplyPullForceToObject(objectToPull.gameObject);
+            }
         }
     }
 
     private void ApplyPullForceToObject(GameObject objectToApplyForce)
     {
         Vector3 forceDir = this.transform.position - objectToApplyForce.transform.position;
+        //forceDir.y = -2.5f;
         Rigidbody objectRigidbody = objectToApplyForce.GetComponent<Rigidbody>();
-        float distanceSqr = Vector3.Distance(objectToApplyForce.transform.position, this.transform.position) *
-             Vector3.Distance(objectToApplyForce.transform.position, this.transform.position);
+        float distance = Vector3.Distance(objectToApplyForce.transform.position, this.transform.position);
+        float distanceSqr = Mathf.Clamp(distance * distance, 0.1f, pullRadius);
 
-        //in the game, pull force was more powerfull on farther objects
-        float forceMagnitude = (objectRigidbody.mass + holeRigidbody.mass) * distanceSqr; 
+        float forceMagnitude = (objectRigidbody.mass + holeRigidbody.mass) / distanceSqr; 
 
-        objectToApplyForce.GetComponent<Rigidbody>().velocity = forceDir.normalized * forceMagnitude * Time.deltaTime;
+        objectToApplyForce.GetComponent<Rigidbody>().velocity = forceDir.normalized * forceMagnitude * pullForceConstant * Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "LevelObject")
+        if (other.tag == "LevelObject")
         {
+            other.transform.DOMove(new Vector3(this.transform.position.x, -2.5f, this.transform.position.z), 0.1f).SetEase(Ease.InOutCubic);
             other.gameObject.layer = (int)GamePhysicsLayers.Hole;
         }
     }
