@@ -6,8 +6,8 @@ using UnityEngine;
 
 enum GamePhysicsLayers
 {
+    Default = 0,
     Hole = 8,
-    Ground = 9,
 }
 
 public class HoleObjectEffect : MonoBehaviour
@@ -60,7 +60,7 @@ public class HoleObjectEffect : MonoBehaviour
     {
         if (other.tag == "LevelObject")
         {
-            other.gameObject.layer = (int)GamePhysicsLayers.Ground;
+            other.gameObject.layer = (int)GamePhysicsLayers.Default;
         }
     }
 }
