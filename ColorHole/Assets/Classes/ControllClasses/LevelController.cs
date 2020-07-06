@@ -5,11 +5,17 @@ using UnityEngine;
 
 public class LevelController : MonoBehaviour
 {
-    
-            
+    public Mesh DENEME;
+    public GameObject pref;
     void Start()
     {
-        BinaryFormatter bformatter = new BinaryFormatter();
+        GameObject nem = Instantiate(pref);
+        LevelObject deneme = nem.AddComponent<LevelObject>();
+        deneme.isCollectable = true;
+        deneme.transform.localScale = Vector3.one;
+        deneme.transform.position = Vector3.zero;
+        deneme.transform.rotation = Quaternion.identity;
+        deneme.meshObject = DENEME;
     }
 
     void SerializeLevel()

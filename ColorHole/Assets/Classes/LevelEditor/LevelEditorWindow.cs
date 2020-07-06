@@ -56,8 +56,18 @@ public class LevelEditorWindow : EditorWindow
         EditorGUILayout.HelpBox(errorMessages, MessageType.Error);
     }
 
-    private GameObject[] findLevelObjects()
+    private List<LevelObject> findLevelObjects()
     {
-        return GameObject.FindGameObjectsWithTag("LevelObject");
+        List<LevelObject> levelObjects = new List<LevelObject>();
+
+        foreach(GameObject foundObject in GameObject.FindGameObjectsWithTag("LevelObject"))
+        {
+            if(foundObject.GetComponent<LevelObject>())
+            {
+                levelObjects.Add(foundObject.GetComponent<LevelObject>());
+            }
+        }
+
+        return levelObjects;
     }
 }

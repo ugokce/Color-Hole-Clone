@@ -20,7 +20,7 @@ public class Level : MonoBehaviour
     public int subLevelPassCount = 0;
 
     [SerializeField]
-    public List<GameObject> levelObjects; 
+    public List<LevelObject> levelObjects; 
 
     public Level(int levelIndex, Color firstColor, Color secondColor,
         Color thirdColor, int subLevelPassCount)
@@ -30,7 +30,7 @@ public class Level : MonoBehaviour
         this.secondColor = secondColor;
         this.thirdColor = thirdColor;
         this.subLevelPassCount = subLevelPassCount;
-        levelObjects = new List<GameObject>();
+        levelObjects = new List<LevelObject>();
     }
 
     public void GenerateLevelObjects()

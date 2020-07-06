@@ -10,9 +10,15 @@ public class LevelObject : MonoBehaviour
     public Color objectColor = Color.white;
     [SerializeField]
     public bool isCollectable = true;
+    [SerializeField]
+    public Transform objTransform;
+    [SerializeField]
+    public Mesh meshObject;
 
     public void Start()
     {
+        init();
+
         var rendererComponent = GetComponent<Renderer>();
 
         if(rendererComponent == null)
@@ -28,5 +34,16 @@ public class LevelObject : MonoBehaviour
         {
             rendererComponent.material = MaterialManager.getInstance().trapGateMaterial;
         }
+    }
+
+    private void init()
+    {
+        transform.localScale = objTransform.localScale;
+        transform.position = objTransform.position;
+        transform.rotation = objTransform.rotation;
+        this.gameObject.AddComponent<MeshFilter>();
+        GetComponent<MeshFilter>().mesh = meshObject;
+        this.gameObject.AddComponent<MeshCollider>().convex = true;
+        this.gameObject.AddComponent<Rigidbody>();
     }
 }
