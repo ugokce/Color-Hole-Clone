@@ -36,6 +36,14 @@ public class LevelObject : MonoBehaviour
         }
     }
 
+    public void CopyValues(LevelObject newObjectValues)
+    {
+        objTransform = newObjectValues.objTransform;
+        objectColor = newObjectValues.objectColor;
+        meshObject = newObjectValues.meshObject;
+        isCollectable = newObjectValues.isCollectable;
+    }
+
     private void init()
     {
         transform.localScale = objTransform.localScale;

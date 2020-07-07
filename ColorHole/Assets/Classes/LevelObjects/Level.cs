@@ -7,7 +7,7 @@ using UnityEngine;
 public class Level : MonoBehaviour
 {
     [SerializeField]
-    public int levelNumber = 0;
+    public int levelNumber = 1;
     [SerializeField]
     public Color firstColor;
     [SerializeField]
@@ -35,9 +35,20 @@ public class Level : MonoBehaviour
 
     public void GenerateLevelObjects()
     {
-        foreach(var objects in levelObjects)
+        foreach(var obj in levelObjects)
         {
-            Instantiate(objects);
+            GameObject newObject = new GameObject();
+            Instantiate(newObject);
+            newObject.AddComponent<LevelObject>();
+            newObject.GetComponent<LevelObject>().CopyValues(obj);
+        }
+    }
+
+    public void ClearLevel()
+    {
+        foreach(var obj in GameObject.FindGameObjectsWithTag("LevelObject"))
+        {
+            Destroy(obj);
         }
     }
 
@@ -48,7 +59,8 @@ public class Level : MonoBehaviour
 
     public void initLevel()
     {
-
+        ClearLevel();
+        GenerateLevelObjects();
     }
 
   

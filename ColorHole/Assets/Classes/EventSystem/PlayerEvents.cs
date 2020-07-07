@@ -19,6 +19,7 @@ public class PlayerEvents
     public UnityEvent onGateOpened;
     public UnityEvent onSubLevelCleared;
     public EventWithVector3 onCameraShouldFollowPlayer;
+    public UnityEvent onPlayerFailed;
 
     //completed level id
     public EventWithInt onLevelCompleted;

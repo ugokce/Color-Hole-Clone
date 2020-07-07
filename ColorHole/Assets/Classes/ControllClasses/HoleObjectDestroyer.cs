@@ -8,6 +8,13 @@ public class HoleObjectDestroyer : MonoBehaviour
     {
         if (other.tag == "LevelObject")
         {
+            LevelObject obj = other.GetComponent<LevelObject>();
+
+            if (obj && !obj.isCollectable)
+            {
+                EventManager.getInstance().playerEvents.onPlayerFailed.Invoke();
+            }
+
             Destroy(other.gameObject);
         }
     }

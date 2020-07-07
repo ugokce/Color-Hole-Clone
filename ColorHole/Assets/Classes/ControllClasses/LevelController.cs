@@ -6,23 +6,18 @@ using UnityEngine;
 public class LevelController : MonoBehaviour
 {
     Level currentLevel;
-
+    int levelIndex = 0;
+    
     void Start()
     {
-        
+        levelIndex = PlayerPrefs.GetInt("CurrentLevel", 1);
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnLevelCompleted()
     {
-        
-    }
+        PlayerPrefs.SetInt("CurrentLevel", currentLevel.levelNumber);
 
-    public void ClearLevel()
-    {
-        foreach (GameObject foundObject in GameObject.FindGameObjectsWithTag("LevelObject"))
-        {
-            Destroy(foundObject);
-        }
+        currentLevel = LevelSerializer.DeSerializeLevel(currentLevel.levelNumber + 1);
+        currentLevel.initLevel();
     }
 }

@@ -16,8 +16,6 @@ public class LevelSerializer : SerializationBinder
             Type typeToDeserialize = null;
 
             assemblyName = Assembly.GetExecutingAssembly().FullName;
-
-            // The following line of code returns the type. 
             typeToDeserialize = Type.GetType(String.Format("{0}, {1}", typeName, assemblyName));
 
             return typeToDeserialize;

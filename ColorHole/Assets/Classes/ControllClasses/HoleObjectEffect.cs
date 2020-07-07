@@ -37,7 +37,6 @@ public class HoleObjectEffect : MonoBehaviour
     private void ApplyPullForceToObject(GameObject objectToApplyForce)
     {
         Vector3 forceDir = this.transform.position - objectToApplyForce.transform.position;
-        //forceDir.y = -2.5f;
         Rigidbody objectRigidbody = objectToApplyForce.GetComponent<Rigidbody>();
         float distance = Vector3.Distance(objectToApplyForce.transform.position, this.transform.position);
         float distanceSqr = Mathf.Clamp(distance * distance, 0.1f, pullRadius);
