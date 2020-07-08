@@ -9,6 +9,7 @@ public class HoleMovement : MonoBehaviour
     public float moveSpeed = 5f;
     private Rigidbody holeRigidbody;
     private bool isMovingToAPoint = false;
+    private Vector3 initialPosition = new Vector3(-1.49f, -1.57f, 3.6f);
 
     void Start()
     {
@@ -16,6 +17,7 @@ public class HoleMovement : MonoBehaviour
 
         EventManager.getInstance().playerEvents.onPlayerInput.AddListener(Move);
         EventManager.getInstance().playerEvents.onDestinationTargetSelected.AddListener(MoveToPoint);
+        EventManager.getInstance().playerEvents.onLevelCompleted.AddListener(OnLevelCompleted);
     }
 
     private void Move(Vector3 direction)
@@ -42,5 +44,10 @@ public class HoleMovement : MonoBehaviour
     private void OnCompletedMovingToPoint()
     {
         isMovingToAPoint = false;
+    }
+
+    private void OnLevelCompleted(int completedLevel)
+    {
+        transform.position = initialPosition;
     }
 }
