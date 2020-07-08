@@ -28,6 +28,7 @@ public class GoldBar : MonoBehaviour , CurrencyBar
 
     private void Start()
     {
+        EventManager.getInstance().playerEvents.onLevelCompleted.AddListener(OnLevelCompleted);
         UpdateCurrency(CurrencyController.GetCurrentGold());
     }
 }
