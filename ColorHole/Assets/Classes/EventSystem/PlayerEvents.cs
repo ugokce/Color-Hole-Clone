@@ -20,6 +20,7 @@ public class PlayerEvents
     public UnityEvent onSubLevelCleared;
     public EventWithVector3 onCameraShouldFollowPlayer;
     public UnityEvent onPlayerFailed;
+    public UnityEvent onObjectCollected;
 
     //completed level id
     public EventWithInt onLevelCompleted;
@@ -32,5 +33,7 @@ public class PlayerEvents
         onSubLevelCleared = new UnityEvent();
         onLevelCompleted = new EventWithInt();
         onCameraShouldFollowPlayer = new EventWithVector3();
+        onPlayerFailed = new UnityEvent();
+        onObjectCollected = new UnityEvent();
     }
 }

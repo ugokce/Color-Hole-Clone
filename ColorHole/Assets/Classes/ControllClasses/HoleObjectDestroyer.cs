@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,8 +15,16 @@ public class HoleObjectDestroyer : MonoBehaviour
             {
                 EventManager.getInstance().playerEvents.onPlayerFailed.Invoke();
             }
+            else
+            {
+                EventManager.getInstance().playerEvents.onObjectCollected.Invoke();
+            }
 
-            Destroy(other.gameObject);
+            other.gameObject.layer = (int)GamePhysicsLayers.Hole;
+            other.transform.DOKill();
+            Destroy(other.gameObject, 1);
+
+            Debug.Log(other.gameObject.name);
         }
     }
 }

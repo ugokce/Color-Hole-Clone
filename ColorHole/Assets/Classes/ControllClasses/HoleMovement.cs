@@ -24,8 +24,8 @@ public class HoleMovement : MonoBehaviour
         {
             return;
         }
-     
-        holeRigidbody.velocity = direction * moveSpeed;
+
+        transform.Translate(direction * moveSpeed * Time.deltaTime);
     }
 
     private void MoveToPoint(Vector3 targetPoint)
