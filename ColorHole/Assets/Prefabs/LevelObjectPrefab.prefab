@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6357378008361176154}
   - component: {fileID: 6357378008361176153}
   - component: {fileID: 6357378008361176152}
+  - component: {fileID: 992074338882491428}
   - component: {fileID: 6637654955016217081}
   m_Layer: 0
   m_Name: LevelObjectPrefab
@@ -94,6 +95,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &992074338882491428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6357378008361176159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bc524452925dae48a1deec1e0cc2143, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectData:
+    isCollectable: 1
+    objTransform: {fileID: 6357378008361176155}
+    meshObject: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!54 &6637654955016217081
 Rigidbody:
   m_ObjectHideFlags: 0

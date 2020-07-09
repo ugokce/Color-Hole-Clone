@@ -1,19 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
-[System.Serializable]
 public class LevelObject : MonoBehaviour
 {
-    [SerializeField]
-    public Color objectColor = Color.white;
-    [SerializeField]
-    public bool isCollectable = true;
-    [SerializeField]
-    public Transform objTransform;
-    [SerializeField]
-    public Mesh meshObject;
+    public LevelObjectData objectData;
 
     public void Start()
     {
@@ -21,12 +12,12 @@ public class LevelObject : MonoBehaviour
 
         var rendererComponent = GetComponent<Renderer>();
 
-        if(rendererComponent == null)
+        if (rendererComponent == null)
         {
             return;
         }
 
-        if (isCollectable)
+        if (objectData.isCollectable)
         {
             rendererComponent.material = MaterialManager.getInstance().collectableMaterial;
         }
@@ -36,22 +27,10 @@ public class LevelObject : MonoBehaviour
         }
     }
 
-    public void CopyValues(LevelObject newObjectValues)
-    {
-        objTransform = newObjectValues.objTransform;
-        objectColor = newObjectValues.objectColor;
-        meshObject = newObjectValues.meshObject;
-        isCollectable = newObjectValues.isCollectable;
-    }
-
     private void init()
     {
-        transform.localScale = objTransform.localScale;
-        transform.position = objTransform.position;
-        transform.rotation = objTransform.rotation;
-        this.gameObject.AddComponent<MeshFilter>();
-        GetComponent<MeshFilter>().mesh = meshObject;
-        this.gameObject.AddComponent<MeshCollider>().convex = true;
-        this.gameObject.AddComponent<Rigidbody>();
+        transform.localScale = objectData.objTransform.scale.ToVector3();
+        transform.position = objectData.objTransform.position.ToVector3();
+        transform.rotation = objectData.objTransform.rotation.ToQuaternion();
     }
 }

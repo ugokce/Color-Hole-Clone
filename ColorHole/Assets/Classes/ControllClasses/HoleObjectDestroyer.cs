@@ -11,7 +11,12 @@ public class HoleObjectDestroyer : MonoBehaviour
         {
             LevelObject obj = other.GetComponent<LevelObject>();
 
-            if (obj && !obj.isCollectable)
+            if(!obj)
+            {
+                return;
+            }
+
+            if (!obj.objectData.isCollectable)
             {
                 EventManager.getInstance().playerEvents.onPlayerFailed.Invoke();
             }

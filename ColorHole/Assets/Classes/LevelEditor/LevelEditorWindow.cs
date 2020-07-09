@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using SerializableTypes;
 
 public class LevelEditorWindow : EditorWindow
 {
@@ -13,8 +14,6 @@ public class LevelEditorWindow : EditorWindow
     Color thirdColor = Color.white;
     string errorMessages = "";
 
-
-    bool isSerializationInProgress = false;
 
     [MenuItem("Window/Level Editor")]
     public static void ShowWindow()
@@ -36,35 +35,48 @@ public class LevelEditorWindow : EditorWindow
         thirdColor = EditorGUILayout.ColorField("ThirdColor(Gates & Traps)", thirdColor);
         EditorGUILayout.Space();
 
-        if(GUILayout.Button("Save Level To File") && !isSerializationInProgress)
+        if (GUILayout.Button("Save Level To File"))
         {
-            isSerializationInProgress = true;
-            Level newLevel = new Level(levelIndex, firstColor, secondColor, thirdColor, sublevelCompleteNumber);
+            Level newLevel = new Level(levelIndex, SerializeColor.fromColor(firstColor), SerializeColor.fromColor(secondColor),
+                    SerializeColor.fromColor(thirdColor), sublevelCompleteNumber);
             newLevel.levelObjects.InsertRange(0, findLevelObjects());
 
-            if(newLevel.levelObjects.Count <= 0)
+            if (newLevel.levelObjects.Count <= 0)
             {
-                isSerializationInProgress = false;
-
                 errorMessages += "Number of Created Objects Must Be Greater Than Zero";
             }
 
-            LevelSerializer.SerializeLevel(newLevel);
-            isSerializationInProgress = false;
+            try
+            {
+                LevelSerializer.SerializeLevel(newLevel);
+            }
+            catch(Exception err)
+            {
+                Debug.LogError("ERROR SAVING FILE");
+                errorMessages += err.Message;
+            }
         }
 
-        EditorGUILayout.HelpBox(errorMessages, MessageType.Error);
+        if(errorMessages != "")
+        {
+            EditorGUILayout.HelpBox(errorMessages, MessageType.Error);
+
+            if (GUILayout.Button("Clear"))
+            {
+                errorMessages = "";
+            }
+        }
     }
 
-    private List<LevelObject> findLevelObjects()
+    private List<LevelObjectData> findLevelObjects()
     {
-        List<LevelObject> levelObjects = new List<LevelObject>();
+        List<LevelObjectData> levelObjects = new List<LevelObjectData>();
 
         foreach(GameObject foundObject in GameObject.FindGameObjectsWithTag("LevelObject"))
         {
             if(foundObject.GetComponent<LevelObject>())
             {
-                levelObjects.Add(foundObject.GetComponent<LevelObject>());
+                levelObjects.Add(foundObject.GetComponent<LevelObject>().objectData);
             }
         }
 

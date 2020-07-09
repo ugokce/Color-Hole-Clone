@@ -15,12 +15,37 @@ public class LevelController : MonoBehaviour
         EventManager.getInstance().playerEvents.onObjectCollected.AddListener(OnObjectCollected);
     }
 
+    public void GenerateLevelObjects()
+    {
+        foreach (var obj in currentLevel.levelObjects)
+        {
+            GameObject newObject = new GameObject();
+            Instantiate(newObject);
+            newObject.AddComponent<LevelObject>();
+            newObject.GetComponent<LevelObject>().objectData.CopyValues(obj);
+        }
+    }
+
+    public void ClearLevel()
+    {
+        foreach (var obj in GameObject.FindGameObjectsWithTag("LevelObject"))
+        {
+            Destroy(obj);
+        }
+    }
+
+    public void initLevel()
+    {
+        ClearLevel();
+        GenerateLevelObjects();
+    }
+
     void OnLevelCompleted()
     {
         PlayerPrefs.SetInt("CurrentLevel", currentLevel.levelNumber);
 
         currentLevel = LevelSerializer.DeSerializeLevel(currentLevel.levelNumber + 1);
-        currentLevel.initLevel();
+        initLevel();
     }
 
     void OnObjectCollected()
@@ -36,5 +61,25 @@ public class LevelController : MonoBehaviour
             OnLevelCompleted();
             EventManager.getInstance().playerEvents.onSubLevelCleared.Invoke();
         }
+    }
+
+    public float GetSubLevelProgress()
+    {
+        if(collectedObjectCount < currentLevel.subLevelPassCount)
+        {
+            return collectedObjectCount / currentLevel.subLevelPassCount;
+        }
+
+        return 1;
+    }
+
+    public float GetLevelProgress()
+    {
+        if(collectedObjectCount < currentLevel.subLevelPassCount)
+        {
+            return 0;
+        }
+
+        return (collectedObjectCount - currentLevel.subLevelPassCount) / (currentLevel.levelObjects.Count - currentLevel.subLevelPassCount);
     }
 }

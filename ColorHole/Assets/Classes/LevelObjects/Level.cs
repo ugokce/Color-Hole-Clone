@@ -2,66 +2,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SerializableTypes;
 
 [Serializable]
-public class Level : MonoBehaviour
+public class Level
 {
     [SerializeField]
     public int levelNumber = 1;
     [SerializeField]
-    public Color firstColor;
+    public SerializeColor firstColor;
     [SerializeField]
-    public Color secondColor;
+    public SerializeColor secondColor;
     [SerializeField]
-    public Color thirdColor;
+    public SerializeColor thirdColor;
     [SerializeField]
     public bool isCompleted = false;
     [SerializeField]
     public int subLevelPassCount = 0;
 
     [SerializeField]
-    public List<LevelObject> levelObjects; 
+    public List<LevelObjectData> levelObjects; 
 
-    public Level(int levelIndex, Color firstColor, Color secondColor,
-        Color thirdColor, int subLevelPassCount)
+    public Level(int levelIndex, SerializableTypes.SerializeColor firstColor, SerializableTypes.SerializeColor secondColor,
+        SerializableTypes.SerializeColor thirdColor, int subLevelPassCount)
     {
         this.levelNumber = levelIndex;
         this.firstColor = firstColor;
         this.secondColor = secondColor;
         this.thirdColor = thirdColor;
         this.subLevelPassCount = subLevelPassCount;
-        levelObjects = new List<LevelObject>();
-    }
-
-    public void GenerateLevelObjects()
-    {
-        foreach(var obj in levelObjects)
-        {
-            GameObject newObject = new GameObject();
-            Instantiate(newObject);
-            newObject.AddComponent<LevelObject>();
-            newObject.GetComponent<LevelObject>().CopyValues(obj);
-        }
-    }
-
-    public void ClearLevel()
-    {
-        foreach(var obj in GameObject.FindGameObjectsWithTag("LevelObject"))
-        {
-            Destroy(obj);
-        }
+        levelObjects = new List<LevelObjectData>();
     }
 
     public int getObjectCount()
     {
         return levelObjects.Count;
     }
-
-    public void initLevel()
-    {
-        ClearLevel();
-        GenerateLevelObjects();
-    }
-
-  
 }

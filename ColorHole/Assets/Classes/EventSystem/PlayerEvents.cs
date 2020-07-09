@@ -16,13 +16,13 @@ public class PlayerEvents
 {
     public EventWithVector3 onPlayerInput;
     public EventWithVector3 onDestinationTargetSelected;
+
     public UnityEvent onGateOpened;
     public UnityEvent onSubLevelCleared;
     public EventWithVector3 onCameraShouldFollowPlayer;
     public UnityEvent onPlayerFailed;
     public UnityEvent onObjectCollected;
-
-    //completed level id
+    public EventWithFloat onProgressionUpdate;
     public EventWithInt onLevelCompleted;
 
     public PlayerEvents()
@@ -35,5 +35,6 @@ public class PlayerEvents
         onCameraShouldFollowPlayer = new EventWithVector3();
         onPlayerFailed = new UnityEvent();
         onObjectCollected = new UnityEvent();
+        onProgressionUpdate = new EventWithFloat();
     }
 }

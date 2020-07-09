@@ -23,4 +23,19 @@ public class MaterialManager : MonoBehaviour
             return _instance;
         }
     }
+
+    public void setGroundColor(Color color)
+    {
+        groundMaterial.color = color;
+    }
+
+    public void setObstacleColor(Color color)
+    {
+        obstacleMaterial.color = color;
+    }
+
+    public void setTrapColor(Color color)
+    {
+        trapGateMaterial.color = color;
+    }
 }
