@@ -1,15 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class LevelObject : MonoBehaviour
 {
+    [SerializeField]
     public LevelObjectData objectData;
 
-    public void Start()
+    public void init()
     {
-        init();
-
         var rendererComponent = GetComponent<Renderer>();
 
         if (rendererComponent == null)
@@ -19,16 +20,13 @@ public class LevelObject : MonoBehaviour
 
         if (objectData.isCollectable)
         {
-            rendererComponent.material = MaterialManager.getInstance().collectableMaterial;
+            rendererComponent.material = MaterialManager.GetInstance().GetMaterial(MaterialType.Collectable);
         }
         else
         {
-            rendererComponent.material = MaterialManager.getInstance().trapGateMaterial;
+            rendererComponent.material = MaterialManager.GetInstance().GetMaterial(MaterialType.TrapOrGate);
         }
-    }
 
-    private void init()
-    {
         transform.localScale = objectData.objTransform.scale.ToVector3();
         transform.position = objectData.objTransform.position.ToVector3();
         transform.rotation = objectData.objTransform.rotation.ToQuaternion();

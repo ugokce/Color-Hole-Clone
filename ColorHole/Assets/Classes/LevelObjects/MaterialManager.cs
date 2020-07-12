@@ -2,40 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MaterialType
+{
+    Collectable = 0,
+    Ground = 1,
+    Obstacle = 2,
+    TrapOrGate = 3
+}
+
 public class MaterialManager : MonoBehaviour
 {
-    private static MaterialManager _instance;
+    public List<Material> gameMaterials;
 
-    public Material collectableMaterial;
-    public Material groundMaterial;
-    public Material obstacleMaterial;
-    public Material trapGateMaterial;
-
-    public static MaterialManager getInstance()
+    public static MaterialManager GetInstance()
     {
-        if (_instance == null)
-        {
-            _instance = new MaterialManager();
-            return _instance;
-        }
-        else
-        {
-            return _instance;
-        }
+        return GameObject.FindWithTag("GameController").GetComponent<MaterialManager>();
     }
 
-    public void setGroundColor(Color color)
+    public void SetMaterialColorColor(Color color, MaterialType type)
     {
-        groundMaterial.color = color;
+        gameMaterials[(int)type].color = color;
     }
 
-    public void setObstacleColor(Color color)
+    public Material GetMaterial(MaterialType type)
     {
-        obstacleMaterial.color = color;
-    }
-
-    public void setTrapColor(Color color)
-    {
-        trapGateMaterial.color = color;
+        return gameMaterials[(int)type];
     }
 }

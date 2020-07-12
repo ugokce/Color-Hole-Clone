@@ -39,9 +39,9 @@ public class LevelEditorWindow : EditorWindow
         {
             Level newLevel = new Level(levelIndex, SerializeColor.fromColor(firstColor), SerializeColor.fromColor(secondColor),
                     SerializeColor.fromColor(thirdColor), sublevelCompleteNumber);
-            newLevel.levelObjects.InsertRange(0, findLevelObjects());
+            newLevel.levelObjectsData.InsertRange(0, findLevelObjects());
 
-            if (newLevel.levelObjects.Count <= 0)
+            if (newLevel.levelObjectsData.Count <= 0)
             {
                 errorMessages += "Number of Created Objects Must Be Greater Than Zero";
             }
@@ -49,6 +49,7 @@ public class LevelEditorWindow : EditorWindow
             try
             {
                 LevelSerializer.SerializeLevel(newLevel);
+                AssetDatabase.Refresh();
             }
             catch(Exception err)
             {
@@ -76,7 +77,12 @@ public class LevelEditorWindow : EditorWindow
         {
             if(foundObject.GetComponent<LevelObject>())
             {
-                levelObjects.Add(foundObject.GetComponent<LevelObject>().objectData);
+                LevelObjectData tempObject = foundObject.GetComponent<LevelObject>().objectData;
+                tempObject.objTransform.position = new SerializeVector3(foundObject.transform.position);
+                tempObject.objTransform.rotation = new SerializeQuaternion(foundObject.transform.rotation);
+                tempObject.objTransform.scale = new SerializeVector3(foundObject.transform.localScale);
+
+                levelObjects.Add(tempObject);
             }
         }
 

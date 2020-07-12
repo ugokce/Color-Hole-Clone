@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class LevelController : MonoBehaviour
 {
+    public List<GameObject> levelObjectPrefabs;
+
     Level currentLevel;
     int levelIndex = 0;
     int collectedObjectCount = 0;
@@ -13,16 +15,18 @@ public class LevelController : MonoBehaviour
         levelIndex = PlayerPrefs.GetInt("CurrentLevel", 1);
 
         EventManager.getInstance().playerEvents.onObjectCollected.AddListener(OnObjectCollected);
+
+        initLevel();
     }
 
     public void GenerateLevelObjects()
     {
-        foreach (var obj in currentLevel.levelObjects)
+        foreach (var obj in currentLevel.levelObjectsData)
         {
-            GameObject newObject = new GameObject();
-            Instantiate(newObject);
-            newObject.AddComponent<LevelObject>();
-            newObject.GetComponent<LevelObject>().objectData.CopyValues(obj);
+            GameObject newLevelObject = Instantiate(levelObjectPrefabs[(int)obj.meshType]);
+            newLevelObject.AddComponent<LevelObject>();
+            newLevelObject.GetComponent<LevelObject>().objectData.CopyValues(obj);
+            newLevelObject.GetComponent<LevelObject>().init();
         }
     }
 
@@ -37,14 +41,14 @@ public class LevelController : MonoBehaviour
     public void initLevel()
     {
         ClearLevel();
+        currentLevel = LevelSerializer.DeSerializeLevel(levelIndex);
         GenerateLevelObjects();
     }
 
     void OnLevelCompleted()
     {
         PlayerPrefs.SetInt("CurrentLevel", currentLevel.levelNumber);
-
-        currentLevel = LevelSerializer.DeSerializeLevel(currentLevel.levelNumber + 1);
+        levelIndex++;
         initLevel();
     }
 
@@ -52,7 +56,7 @@ public class LevelController : MonoBehaviour
     {
         collectedObjectCount++;
 
-        if(collectedObjectCount >= currentLevel.levelObjects.Count)
+        if(collectedObjectCount >= currentLevel.levelObjectsData.Count)
         {
             EventManager.getInstance().playerEvents.onLevelCompleted.Invoke(currentLevel.levelNumber);
         }
@@ -65,9 +69,9 @@ public class LevelController : MonoBehaviour
 
     public float GetSubLevelProgress()
     {
-        if(collectedObjectCount < currentLevel.subLevelPassCount)
+        if(currentLevel != null && collectedObjectCount < currentLevel.subLevelPassCount)
         {
-            return collectedObjectCount / currentLevel.subLevelPassCount;
+            return (float)collectedObjectCount / currentLevel.subLevelPassCount;
         }
 
         return 1;
@@ -80,6 +84,6 @@ public class LevelController : MonoBehaviour
             return 0;
         }
 
-        return (collectedObjectCount - currentLevel.subLevelPassCount) / (currentLevel.levelObjects.Count - currentLevel.subLevelPassCount);
+        return (collectedObjectCount - currentLevel.subLevelPassCount) / (currentLevel.levelObjectsData.Count - currentLevel.subLevelPassCount);
     }
 }

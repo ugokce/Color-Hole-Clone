@@ -11,6 +11,8 @@ public class LevelObjectData
     public bool isCollectable = true;
     [SerializeField]
     public SerialzeTransform objTransform;
+    [SerializeField]
+    public PrimitiveType meshType;
 
     public LevelObjectData(bool isCollectable, Transform objTransform)
     {
@@ -22,5 +24,6 @@ public class LevelObjectData
     {
         objTransform = newObjectValues.objTransform;
         isCollectable = newObjectValues.isCollectable;
+        meshType = newObjectValues.meshType;
     }
 }

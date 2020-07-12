@@ -21,7 +21,7 @@ public class Level
     public int subLevelPassCount = 0;
 
     [SerializeField]
-    public List<LevelObjectData> levelObjects; 
+    public List<LevelObjectData> levelObjectsData; 
 
     public Level(int levelIndex, SerializableTypes.SerializeColor firstColor, SerializableTypes.SerializeColor secondColor,
         SerializableTypes.SerializeColor thirdColor, int subLevelPassCount)
@@ -31,11 +31,11 @@ public class Level
         this.secondColor = secondColor;
         this.thirdColor = thirdColor;
         this.subLevelPassCount = subLevelPassCount;
-        levelObjects = new List<LevelObjectData>();
+        levelObjectsData = new List<LevelObjectData>();
     }
 
     public int getObjectCount()
     {
-        return levelObjects.Count;
+        return levelObjectsData.Count;
     }
 }
