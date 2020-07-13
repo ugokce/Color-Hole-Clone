@@ -38,7 +38,11 @@ public class HoleObjectEffect : MonoBehaviour
     {
         if(objectToApplyForce.transform.position.y < -1.2f)
         {
-            return;
+            pullForceConstant = 1f;
+        }
+        else
+        {
+            pullForceConstant = 2f;
         }
 
         Vector3 forceDir = this.transform.position - objectToApplyForce.transform.position;
@@ -55,7 +59,8 @@ public class HoleObjectEffect : MonoBehaviour
     {
         if (other.tag == "LevelObject")
         {
-            other.transform.DOMove(new Vector3(this.transform.position.x, -2.5f, this.transform.position.z), 0.1f).SetEase(Ease.InOutCubic);
+            other.transform.DOMove(new Vector3(this.transform.position.x, -2.5f, this.transform.position.z), 0.1f);
+            other.transform.DOScale(0.2f, 1f);
             other.gameObject.layer = (int)GamePhysicsLayers.Hole;
         }
     }
