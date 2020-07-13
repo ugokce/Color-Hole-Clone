@@ -7,6 +7,7 @@ using SerializableTypes;
 
 public class LevelEditorWindow : EditorWindow
 {
+    int levelCompleteNumber = 0;
     int sublevelCompleteNumber = 0;
     int levelIndex = 0;
     Color firstColor = Color.white;
@@ -40,6 +41,7 @@ public class LevelEditorWindow : EditorWindow
             Level newLevel = new Level(levelIndex, SerializeColor.fromColor(firstColor), SerializeColor.fromColor(secondColor),
                     SerializeColor.fromColor(thirdColor), sublevelCompleteNumber);
             newLevel.levelObjectsData.InsertRange(0, findLevelObjects());
+            newLevel.levelPassCount = levelCompleteNumber;
 
             if (newLevel.levelObjectsData.Count <= 0)
             {
@@ -72,8 +74,9 @@ public class LevelEditorWindow : EditorWindow
     private List<LevelObjectData> findLevelObjects()
     {
         List<LevelObjectData> levelObjects = new List<LevelObjectData>();
+        levelCompleteNumber = 0;
 
-        foreach(GameObject foundObject in GameObject.FindGameObjectsWithTag("LevelObject"))
+        foreach (GameObject foundObject in GameObject.FindGameObjectsWithTag("LevelObject"))
         {
             if(foundObject.GetComponent<LevelObject>())
             {
@@ -83,6 +86,11 @@ public class LevelEditorWindow : EditorWindow
                 tempObject.objTransform.scale = new SerializeVector3(foundObject.transform.localScale);
 
                 levelObjects.Add(tempObject);
+
+                if(tempObject.isCollectable)
+                {
+                    levelCompleteNumber++;
+                }
             }
         }
 
