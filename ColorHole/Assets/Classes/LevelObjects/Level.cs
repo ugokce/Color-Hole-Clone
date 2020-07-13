@@ -19,6 +19,8 @@ public class Level
     public bool isCompleted = false;
     [SerializeField]
     public int subLevelPassCount = 0;
+    [SerializeField]
+    public int levelPassCount = 0;
 
     [SerializeField]
     public List<LevelObjectData> levelObjectsData; 
