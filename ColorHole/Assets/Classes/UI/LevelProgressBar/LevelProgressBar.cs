@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class LevelProgressBar : MonoBehaviour
 {
     public ProgressBar firstProgressBar;
     public ProgressBar secondProgressBar;
-    private LevelController levelController;
+
+    public TextMeshProUGUI previousLevelLabel;
+    public TextMeshProUGUI nextLevelLabel;
 
     private void Start()
     {
@@ -14,14 +17,24 @@ public class LevelProgressBar : MonoBehaviour
 
         if(controllerObj)
         {
-            levelController = controllerObj.GetComponent<LevelController>();
-            EventManager.getInstance().playerEvents.onObjectCollected.AddListener(UpdateProgressBars);
+            var levelController = controllerObj.GetComponent<LevelController>();
+            levelController.onObjectCollected.AddListener(UpdateProgressBars);
         }
+
+        EventManager.getInstance().playerEvents.onLevelCompleted.AddListener(OnLevelCompleted);
     }
 
-    void UpdateProgressBars()
+    void OnLevelCompleted(int levelNumber)
     {
-        firstProgressBar.SetValue(levelController.GetSubLevelProgress());
-        secondProgressBar.SetValue((levelController.GetLevelProgress()));
+        previousLevelLabel.SetText((levelNumber - 1).ToString());
+        nextLevelLabel.SetText(levelNumber.ToString());
+
+        UpdateProgressBars(new List<float>{0, 0});
+    }
+
+    void UpdateProgressBars(List<float> progressValues)
+    {
+        firstProgressBar.SetValue(progressValues[0]);
+        secondProgressBar.SetValue(progressValues[1]);
     }
 }
