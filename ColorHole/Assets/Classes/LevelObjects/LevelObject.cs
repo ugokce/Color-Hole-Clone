@@ -30,5 +30,16 @@ public class LevelObject : MonoBehaviour
         transform.localScale = objectData.objTransform.scale.ToVector3();
         transform.position = objectData.objTransform.position.ToVector3();
         transform.rotation = objectData.objTransform.rotation.ToQuaternion();
+
+        StartCoroutine(EnablePhysics());
+    }
+
+    IEnumerator EnablePhysics()
+    {
+        GetComponent<Rigidbody>().isKinematic = true;
+
+        yield return new WaitForSecondsRealtime(1f);
+
+        GetComponent<Rigidbody>().isKinematic = false;
     }
 }
