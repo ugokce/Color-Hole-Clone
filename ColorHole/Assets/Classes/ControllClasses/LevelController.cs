@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LevelController : MonoBehaviour
 {
@@ -10,8 +11,12 @@ public class LevelController : MonoBehaviour
     Level currentLevel;
     int levelIndex = 0;
     int collectedObjectCount = 0;
+    public GenericEventWithList<float> onObjectCollected = new GenericEventWithList<float>();
+
+
     void Start()
     {
+        PlayerPrefs.DeleteAll();
         levelIndex = PlayerPrefs.GetInt("CurrentLevel", 1);
 
         EventManager.getInstance().playerEvents.onObjectCollected.AddListener(OnObjectCollected);
@@ -47,22 +52,30 @@ public class LevelController : MonoBehaviour
 
     void OnLevelCompleted()
     {
-        PlayerPrefs.SetInt("CurrentLevel", currentLevel.levelNumber);
         levelIndex++;
+        PlayerPrefs.SetInt("CurrentLevel", levelIndex);
+        ResetLevelValues();
         initLevel();
+    }
+
+    void ResetLevelValues()
+    {
+        collectedObjectCount = 0;
     }
 
     void OnObjectCollected()
     {
         collectedObjectCount++;
 
-        if(collectedObjectCount >= currentLevel.levelObjectsData.Count)
+        onObjectCollected.Invoke(new List<float> {GetSubLevelProgress(), GetLevelProgress()});
+
+        if (collectedObjectCount >= currentLevel.levelPassCount)
         {
             EventManager.getInstance().playerEvents.onLevelCompleted.Invoke(currentLevel.levelNumber);
+            OnLevelCompleted();
         }
         else if(collectedObjectCount >= currentLevel.subLevelPassCount)
         {
-            OnLevelCompleted();
             EventManager.getInstance().playerEvents.onSubLevelCleared.Invoke();
         }
     }
@@ -81,9 +94,12 @@ public class LevelController : MonoBehaviour
     {
         if(collectedObjectCount < currentLevel.subLevelPassCount)
         {
+            Debug.Log("Sublevel:" + collectedObjectCount + " / " + currentLevel.subLevelPassCount);
             return 0;
         }
 
-        return (collectedObjectCount - currentLevel.subLevelPassCount) / (currentLevel.levelObjectsData.Count - currentLevel.subLevelPassCount);
+        Debug.Log("Level" + (collectedObjectCount - currentLevel.subLevelPassCount) + " / " + (currentLevel.levelPassCount - currentLevel.subLevelPassCount));
+
+        return (float)(collectedObjectCount - currentLevel.subLevelPassCount) / (currentLevel.levelPassCount - currentLevel.subLevelPassCount);
     }
 }
