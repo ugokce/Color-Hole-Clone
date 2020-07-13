@@ -9,6 +9,9 @@ public class EventWithVector3 : UnityEvent<Vector3>
 public class EventWithFloat : UnityEvent<float>
 {}
 
+public class GenericEventWithList<T> : UnityEvent<List<T>>
+{}
+
 public class EventWithInt : UnityEvent<int>
 { }
 
