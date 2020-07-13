@@ -26,6 +26,7 @@ public class HoleObjectDestroyer : MonoBehaviour
             }
 
             other.gameObject.layer = (int)GamePhysicsLayers.Hole;
+            other.GetComponent<MeshRenderer>().enabled = false;
             other.transform.DOKill();
             Destroy(other.gameObject, 1);
 
