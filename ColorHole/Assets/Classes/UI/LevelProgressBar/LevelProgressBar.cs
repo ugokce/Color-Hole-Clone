@@ -22,14 +22,20 @@ public class LevelProgressBar : MonoBehaviour
         }
 
         EventManager.getInstance().playerEvents.onLevelCompleted.AddListener(OnLevelCompleted);
+        EventManager.getInstance().playerEvents.onRestartGame.AddListener(OnLevelRestart);
     }
 
     void OnLevelCompleted(int levelNumber)
     {
-        previousLevelLabel.SetText((levelNumber - 1).ToString());
-        nextLevelLabel.SetText(levelNumber.ToString());
+        previousLevelLabel.SetText(levelNumber.ToString());
+        nextLevelLabel.SetText((levelNumber + 1).ToString());
 
         UpdateProgressBars(new List<float>{0, 0});
+    }
+
+    void OnLevelRestart()
+    {
+        UpdateProgressBars(new List<float> { 0, 0 });
     }
 
     void UpdateProgressBars(List<float> progressValues)

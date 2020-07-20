@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using SerializableTypes;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,9 +20,9 @@ public class MaterialManager : MonoBehaviour
         return GameObject.FindWithTag("GameController").GetComponent<MaterialManager>();
     }
 
-    public void SetMaterialColorColor(Color color, MaterialType type)
+    public void SetMaterialColor(SerializeColor color, MaterialType type)
     {
-        gameMaterials[(int)type].color = color;
+        gameMaterials[(int)type].color = color.getColor();
     }
 
     public Material GetMaterial(MaterialType type)

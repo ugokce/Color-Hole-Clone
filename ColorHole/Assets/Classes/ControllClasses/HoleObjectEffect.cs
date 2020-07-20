@@ -21,13 +21,23 @@ public class HoleObjectEffect : MonoBehaviour
         holeRigidbody = GetComponent<Rigidbody>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Collider[] objectsInPullRange = Physics.OverlapSphere(transform.position, pullRadius);
 
         foreach(Collider objectToPull in objectsInPullRange)
         {
-            if(objectToPull.tag == "LevelObject" && objectToPull.gameObject.layer != (int)GamePhysicsLayers.Hole)
+            if (GetComponent<Collider>().enabled == false)
+            {
+                break;
+            }
+
+            if (objectToPull.gameObject.layer == (int)GamePhysicsLayers.Hole)
+            {
+                continue;
+            }
+
+            if(objectToPull.tag == "LevelObject")
             {
                 ApplyPullForceToObject(objectToPull.gameObject);
             }

@@ -13,6 +13,18 @@ public class Gate : MonoBehaviour
         initialPos = gateObject.transform.position;
         EventManager.getInstance().playerEvents.onSubLevelCleared.AddListener(OpenTheDoor);
         EventManager.getInstance().playerEvents.onLevelCompleted.AddListener(ResetDoor);
+        EventManager.getInstance().playerEvents.onRestartGame.AddListener(OnRestartLevel);
+        EventManager.getInstance().playerEvents.onPlayerCompletedSubLevelAnim.AddListener(CloseDoor);
+    }
+
+    private void CloseDoor()
+    {
+        gateObject.transform.DOMove(initialPos, 0.3f).OnComplete(onDoorOpened);
+    }
+
+    private void OnRestartLevel()
+    {
+        ResetDoor(0);
     }
 
     private void ResetDoor(int level)

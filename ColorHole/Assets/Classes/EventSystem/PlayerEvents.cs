@@ -18,12 +18,13 @@ public class EventWithInt : UnityEvent<int>
 public class PlayerEvents
 {
     public EventWithVector3 onPlayerInput;
-    public EventWithVector3 onDestinationTargetSelected;
 
     public UnityEvent onGateOpened;
     public UnityEvent onSubLevelCleared;
+    public UnityEvent onPlayerCompletedSubLevelAnim;
     public EventWithVector3 onCameraShouldFollowPlayer;
     public UnityEvent onPlayerFailed;
+    public UnityEvent onRestartGame;
     public UnityEvent onObjectCollected;
     public EventWithFloat onProgressionUpdate;
     public EventWithInt onLevelCompleted;
@@ -31,10 +32,11 @@ public class PlayerEvents
     public PlayerEvents()
     {
         onPlayerInput = new EventWithVector3();
-        onDestinationTargetSelected = new EventWithVector3();
         onGateOpened = new UnityEvent();
         onSubLevelCleared = new UnityEvent();
+        onPlayerCompletedSubLevelAnim = new UnityEvent();
         onLevelCompleted = new EventWithInt();
+        onRestartGame = new UnityEvent();
         onCameraShouldFollowPlayer = new EventWithVector3();
         onPlayerFailed = new UnityEvent();
         onObjectCollected = new UnityEvent();
