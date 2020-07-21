@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class LevelSerializer : SerializationBinder
 {
@@ -63,11 +64,47 @@ public class LevelSerializer : SerializationBinder
 
     public static void SerializeLevel(Level newLevel)
     {
-        Save(newLevel, "Assets\\Levels\\Level-" + newLevel.levelNumber.ToString());
+        Save(newLevel, Application.streamingAssetsPath + "/Level-" + newLevel.levelNumber.ToString());
     }
 
     public static Level DeSerializeLevel(int levelIndex)
     {
-        return OpenLevel("Assets\\Levels\\Level-" + levelIndex.ToString());
+        string levelFilePath = Application.persistentDataPath + "/Level-" + levelIndex.ToString();
+
+        if(!File.Exists(levelFilePath))
+        {
+            StreamFromFile("Level-" + levelIndex.ToString());
+        }
+
+        return OpenLevel(levelFilePath);
+    }
+
+    public static void StreamFromFile(string fileName)
+    {
+        string filePathFromStreamingAssets = Application.streamingAssetsPath + "/" + fileName;
+
+        if (Application.platform != RuntimePlatform.Android)
+        {
+           filePathFromStreamingAssets = "file://" + filePathFromStreamingAssets;
+        }
+        
+        var loadingRequest = UnityWebRequest.Get(filePathFromStreamingAssets);
+        loadingRequest.SendWebRequest();
+        int i = 0;
+
+        while (!loadingRequest.isDone)
+        {
+            if (loadingRequest.isNetworkError || loadingRequest.isHttpError || i >= 1000)
+            {
+                break;
+            }
+
+            i++;
+        }
+
+        if (!loadingRequest.isNetworkError && !loadingRequest.isHttpError)
+        {
+            File.WriteAllBytes(Path.Combine(Application.persistentDataPath, fileName), loadingRequest.downloadHandler.data);
+        }
     }
 }

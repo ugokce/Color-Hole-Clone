@@ -5,15 +5,34 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public Vector3 initialPos;
+
     void Start()
     {
-        EventManager.getInstance().playerEvents.onCameraShouldFollowPlayer.AddListener(onCameraShouldFollowPlayer);
+        EventManager.getInstance().playerEvents.onSubLevelCleared.AddListener(MoveNextPosition);
+        EventManager.getInstance().playerEvents.onLevelCompleted.AddListener(OnLevelCompleted);
+        EventManager.getInstance().playerEvents.onRestartGame.AddListener(OnGameRestarted);
     }
 
-    private void onCameraShouldFollowPlayer(Vector3 targetPosition)
+    void OnLevelCompleted(int level)
     {
-        targetPosition.y = this.transform.position.y;
+        ResetPosition();
+    }
 
-        transform.DOMove(targetPosition, 0.1f);
+    void OnGameRestarted()
+    {
+        ResetPosition();
+    }
+
+    void ResetPosition()
+    {
+        transform.position = initialPos;
+    }
+
+    private void MoveNextPosition()
+    {
+        Sequence mySequence = DOTween.Sequence();
+        mySequence.AppendInterval(0.5f);
+        mySequence.Append(transform.DOMoveX(-24.1f, 3f));
     }
 }

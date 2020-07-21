@@ -29,6 +29,7 @@ public class HoleObjectDestroyer : MonoBehaviour
             other.GetComponent<MeshRenderer>().enabled = false;
             other.transform.DOKill();
             Destroy(other.gameObject, 1);
+            Handheld.Vibrate();
 
             Debug.Log(other.gameObject.name);
         }

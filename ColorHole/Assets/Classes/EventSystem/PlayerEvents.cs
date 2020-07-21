@@ -22,7 +22,6 @@ public class PlayerEvents
     public UnityEvent onGateOpened;
     public UnityEvent onSubLevelCleared;
     public UnityEvent onPlayerCompletedSubLevelAnim;
-    public EventWithVector3 onCameraShouldFollowPlayer;
     public UnityEvent onPlayerFailed;
     public UnityEvent onRestartGame;
     public UnityEvent onObjectCollected;
@@ -37,7 +36,6 @@ public class PlayerEvents
         onPlayerCompletedSubLevelAnim = new UnityEvent();
         onLevelCompleted = new EventWithInt();
         onRestartGame = new UnityEvent();
-        onCameraShouldFollowPlayer = new EventWithVector3();
         onPlayerFailed = new UnityEvent();
         onObjectCollected = new UnityEvent();
         onProgressionUpdate = new EventWithFloat();

@@ -15,14 +15,22 @@ public class HoleObjectEffect : MonoBehaviour
     Rigidbody holeRigidbody;
     public float pullRadius = 3;
     public float pullForceConstant = 1f;
+    bool isPlayerFailed = false;
 
     void Start()
     {
         holeRigidbody = GetComponent<Rigidbody>();
+        EventManager.getInstance().playerEvents.onPlayerFailed.AddListener(OnPlayerFailed);
+        EventManager.getInstance().playerEvents.onRestartGame.AddListener(OnGameRestarted);
     }
 
     private void FixedUpdate()
     {
+        if(isPlayerFailed)
+        {
+            return;
+        }
+
         Collider[] objectsInPullRange = Physics.OverlapSphere(transform.position, pullRadius);
 
         foreach(Collider objectToPull in objectsInPullRange)
@@ -44,17 +52,18 @@ public class HoleObjectEffect : MonoBehaviour
         }
     }
 
+    private void OnGameRestarted()
+    {
+        isPlayerFailed = false;
+    }
+
+    private void OnPlayerFailed()
+    {
+        isPlayerFailed = true;
+    }
+
     private void ApplyPullForceToObject(GameObject objectToApplyForce)
     {
-        if(objectToApplyForce.transform.position.y < -1.2f)
-        {
-            pullForceConstant = 1f;
-        }
-        else
-        {
-            pullForceConstant = 2f;
-        }
-
         Vector3 forceDir = this.transform.position - objectToApplyForce.transform.position;
         Rigidbody objectRigidbody = objectToApplyForce.GetComponent<Rigidbody>();
         float distance = Vector3.Distance(objectToApplyForce.transform.position, this.transform.position);
@@ -67,19 +76,18 @@ public class HoleObjectEffect : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "LevelObject")
+        if (isPlayerFailed)
         {
-            other.transform.DOMove(new Vector3(this.transform.position.x, -2.5f, this.transform.position.z), 0.1f);
-            other.transform.DOScale(0.2f, 1f);
-            other.gameObject.layer = (int)GamePhysicsLayers.Hole;
+            return;
         }
-    }
 
-    private void OnTriggerExit(Collider other)
-    {
         if (other.tag == "LevelObject")
         {
-            other.gameObject.layer = (int)GamePhysicsLayers.Default;
+            other.DOKill();
+            other.transform.DOMove(new Vector3(this.transform.position.x, -2.5f, this.transform.position.z), 0.1f);
+ 
+            other.transform.DOScale(0.2f, 0.2f);
+            other.gameObject.layer = (int)GamePhysicsLayers.Hole;
         }
     }
 }

@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using SerializableTypes;
 
+#if UNITY_EDITOR
 public class LevelEditorWindow : EditorWindow
 {
     int levelCompleteNumber = 0;
@@ -97,3 +98,4 @@ public class LevelEditorWindow : EditorWindow
         return levelObjects;
     }
 }
+#endif
